@@ -288,6 +288,19 @@ int tamanoDeEntrada(std::string A){
 }
 
 /*
+n -> numero de charts
+*/
+void imprimirChats(std::vector<tupla>S[],int n){
+    for(int i=0;i<n;i++){
+        std::cout<<"========================S: "<<i<<"======================"<<std::endl;
+            for (int j = 0; j<S[i].size() ; j++){
+                auto temp = S[i].at(j);
+                std::cout <<"Estado "<<j<<" | "<< temp <<std::endl;
+            }
+    }
+}
+
+/*
 A => entrada
 G => producciones
 */
@@ -339,11 +352,12 @@ int early_parser(std::string A , std::string Grammar[],int n_proposiciones){
             }
         }
     }
-
+    imprimirChats(S,tamanoEntrada+1);
+    return 0;
     myfile<<"=============Finalizado==============\n";
     }
-    return 0;
 }
+
 
 int main(){
    /*
