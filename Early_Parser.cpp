@@ -14,12 +14,13 @@ Implementacion por:
 #include <fstream>
 using namespace std;
 
+
 class produccion {
 private:
     std::string izquierda;
     std::string derecha;
 public:
-    produccion(std::string produccion, int k, int j){
+    produccion(std::string produccion){
         int breakk= 0;
         //ubica la posicion de separacion (::=)     
         for(int j=0 ; j<produccion.length() ; j++){
@@ -50,12 +51,80 @@ public:
         }
         return cont+1;
     }
+    friend ostream& operator<<(ostream& os, const produccion& dt);
+    friend bool operator!=(produccion const& x, produccion const& y);
 };
+
+ostream& operator<<(ostream& os, const produccion& dt){
+    os << dt.izquierda << " => " <<  dt.derecha;
+    return os;
+}
+
+bool operator!=(produccion const& x, produccion const& y)
+{
+    if(x.izquierda == y.izquierda && x.derecha == y.derecha)
+        return false;
+    else 
+        return true;
+}
 
 class Grammar{
 private:
-    std::vector<produccion>listaDeProducciones;
+    std::vector<produccion>producciones_terminales;
+    std::vector<produccion>producciones_no_terminales;
+public:
+    Grammar(std::string G[],int n);
+    void print();
+    
 };
+
+void Grammar::print(){
+    std::cout<<"No terminales:\n";
+    for (auto it = producciones_no_terminales.begin(); it != producciones_no_terminales.end(); it++){
+        std::cout<<*it<<std::endl;
+    }
+    std::cout<<"Terminales:\n";
+    for (auto it = producciones_terminales.begin(); it != producciones_terminales.end(); it++){
+        std::cout<<*it<<std::endl;
+    }
+
+}
+
+/*
+G ->lista producciones no procesadas (forma 'izquierda' ::= 'derecha' )
+n -> numero de producciones
+*/
+Grammar::Grammar(std::string G[],int n){
+    std::vector<produccion> lista_de_producciones;
+    for(int i=0;i<n;i++)
+        lista_de_producciones.push_back(produccion(G[i]));
+    
+    for (int i = 0; i<lista_de_producciones.size() ; i++){
+        int cont=0;
+        produccion temp1 = lista_de_producciones.at(i);
+        //es produccion no terminal?
+        //si tiene mas de un caracter en la derecha no es terminal
+        if(temp1.getlength()>1){
+            cont++;
+            producciones_no_terminales.push_back(temp1);
+        }
+        //si tiene un caracter en la derecha se verifica que este caracter no tenga produccion
+        else{
+            std::string temp2 = temp1.getDerecha();
+            //buscando en las produccion que no haya una produccion del caracter derecho
+            for (int j = 0; j<lista_de_producciones.size() ; j++){
+                produccion temp3 = lista_de_producciones.at(j);
+                if(temp2 == temp3.getIzquierda()){
+                    cont++;
+                    producciones_no_terminales.push_back(temp1);
+                    break;
+                }
+            }
+        }
+        if(cont==0)
+            producciones_terminales.push_back(temp1);
+    }
+} 
 
 /*
 estado
@@ -252,7 +321,9 @@ bool esterminal(std::vector<estado> G, std::string caracter){
     }
     return 1;
 }
-
+/*
+Si el punto de early esta al final de la parte derecha
+*/
 bool terminado(estado S){
     //std::cout<<"El punto esta al final? "<<S.getDotPosition()<<" "<<S.getlength()<<std::endl;
     if(S.getDotPosition()>=S.getlength())
@@ -372,9 +443,9 @@ int main(){
         "T ::= number" ,
         
     };
-    early_parser(A,G,6);
+   // early_parser(A,G,6);
 */
-  /* 
+   /*
     //Ejemplo YT: https://www.youtube.com/watch?v=WNKw1tiskSM&t=1622s
     std::string A = "1 + 1";
     std::string G[] = {
@@ -406,16 +477,15 @@ int main(){
         "verb ::= include" ,
         "verb ::= prefer" ,
     };
-    early_parser(A,G,17);
+   // early_parser(A,G,17);
     
     /*
-    int tamanoEntrada=tamanoDeEntrada(A);
-    std::vector<estado> grammar;
-    //std::cout<<"Creando gramatica..\n"<<n_proposiciones;
-    for(int i=0 ; i<17 ; i++){
-        grammar.push_back(estado(G[i],0,0));
-    }
-    //std::cout<<getTerminal("NP",grammar).size();
-    //std::cout<<esterminal(grammar,"nominal");*/
+    produccion test0("verbo ::= the hola");
+    std::cout<<test0.getDerecha();
+    */
+   
+    Grammar test1(G,3);
+    test1.print();
+
     return 0;
 }
