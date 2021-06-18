@@ -2,9 +2,18 @@
 EARLY PARSER  
 ============================
 Implementacion por:
-+Ccorahua Lozano Rommel
 +Huanca Parqui Elizabeth Yasmin
 +Villanueva Guerrero Luisa
+
+class NTerminal {
+  string lexema;
+  map<string,string>
+}
+
+void NTerminal::read(string | ios)
+void NTerminal::operator==( NTerminal &nterminal )
+void NTerminal::operator==( string )
+
 */
 
 #include <iostream>
@@ -13,8 +22,11 @@ Implementacion por:
 #include <ctime>
 #include <fstream>
 using namespace std;
+/*
+considerar |
+derecha -> array de string x caracter
 
-
+*/
 class produccion {
 private:
     std::string izquierda;
@@ -71,7 +83,7 @@ bool operator!=(produccion const& x, produccion const& y)
 class Grammar{
 private:
     std::vector<produccion>producciones_terminales;
-    std::vector<produccion>producciones_no_terminales;
+    std::vector<produccion>producciones_no_terminales; 
 public:
     Grammar(std::string G[],int n);
     void print();
@@ -172,6 +184,7 @@ public:
         return produccion;
     }
 
+
     /*Devuelve el elemento despues del '*' */
     std::string getNextElement(){ 
         std::string temp;
@@ -195,6 +208,7 @@ public:
     std::string getDerecha(){ 
         return derecha;
     }
+
     //devuelva la cantidad de elementos a la derecha de la produccion
     int getlength(){
         int cont = 0;
@@ -203,24 +217,6 @@ public:
                 cont ++;
         }
         return cont+1;
-    }
-
-        /*Devuelve el elemento despues del '*' */
-    std::string getElement(int n){ 
-        std::string temp;
-        int cont=0;
-        int k;
-        //cuenta los espacios
-        for(k=0; cont<n && k<derecha.length();k++){
-            if(derecha[k]==32){
-                cont++;
-            }
-        }
-        //extrae el elemento despues del espacio k
-        for(int j=k; derecha[j]!=32 && j<derecha.length();j++){
-            temp += derecha[j];
-        }
-        return temp;
     }
 
     friend ostream& operator<<(ostream& os, const estado& dt);
@@ -246,6 +242,9 @@ bool estaRepetido(std::vector<estado> S,estado estadoA,int k){
     return 0;
 }
 
+//X → α • Y β, j
+
+//Y → • γ, k
 void predecir(estado temp ,std::vector<estado> S[], int k, std::vector<estado> Grammar){
    /* form (X → α • Y β, j) , add (Y → • γ, k) */
     std::string Y = temp.getNextElement();
@@ -484,7 +483,7 @@ int main(){
     std::cout<<test0.getDerecha();
     */
    
-    Grammar test1(G,3);
+    Grammar test1(G,17);
     test1.print();
 
     return 0;
