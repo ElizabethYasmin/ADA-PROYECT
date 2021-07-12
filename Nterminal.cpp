@@ -1,76 +1,81 @@
 #include <iostream>
 #include <map>
 #include <vector>
-/*
-tareas:
-Leer Gramatica Dependiente del Contexto
-Or
-separar tokens?
-
-pa' saber:
-map es un contenedor asociativo para contener en orden una
-lista de parejas de valores únicos asociados como clave/valor.
-
-class NTerminal {
-  string lexema;
-  map<string,string>
-}
-
-void NTerminal::read(string | ios)
-void NTerminal::operator==( NTerminal &nterminal )
-void NTerminal::operator==( string )
-*/
-
+ 
 class NTerminal {
 private:
-  std::string lexema;
-  //std::map<std::string,std::string> Map;
-  std::map<int,std::string> derecha;
-
+    std::string lexema;
+    std::map<std::string,std::string> atributos;
 public:
-  NTerminal(std::string);
-  void read(std::string ios);
-  void operator==(NTerminal &nterminal );
-  void operator==(std::string );
+    NTerminal();
+    NTerminal(std::string);
+    void addAtributo(std::string,std::string);
 
-  friend std::ostream& operator<<(std::ostream& os, const NTerminal& dt);
-  friend NTerminal operator==(NTerminal&, NTerminal&);
-  friend NTerminal operator==(NTerminal&, std::string&);
+    friend std::ostream& operator<<(std::ostream& os, const NTerminal& dt);
+
 };
 
-NTerminal::NTerminal(std::string produccion){
-    int i,breakk;
-    for(i=0 ; i<produccion.length() ; i++){
-        if(produccion[i+1]==':')
+NTerminal::NTerminal(){;}
+//forma [TENSE=?t, NUM=?n]
+NTerminal::NTerminal(std::string lex){
+    int i,_switch=0;
+    std::string atrib;
+    std::string val;
+    //separando el nombre de la etiqueta
+    for(i=0 ; i<lex.length() ; i++){
+        if(lex[i]=='[')
             break;
-        lexema+=produccion[i];
+        this->lexema+=lex[i];
     }
-    std::string temp;
-    int j=0;
-    for(i=i+5 ; i<produccion.length() ; i++){
-        if(produccion[i]==32){
-            derecha.insert({ j, temp });
-            j++; temp = "";
+    //std::cout<<"Lexema: "<<lexema<<std::endl;
+    i++; //siguiente elemento a [
+    for(i ; i<lex.length() ; i++){
+        if(lex[i]=='=')
+            _switch=1;
+        else if(lex[i]==32)
+            continue;
+        else if(lex[i]==']'||lex[i]==','){
+            //std::cout<<"atrib: "<<atrib<<std::endl;
+            //std::cout<<"val: "<<val<<std::endl;
+            addAtributo(atrib,val);
+            atrib = "";
+            val = "";
+            _switch=0;
         }
-        else temp+=produccion[i];
+        else if(_switch==0)
+            atrib+=lex[i];
+        else if(_switch==1)
+            val+=lex[i];
     }
-    derecha.insert({ j, temp });
-}
-
-NTerminal operator==(NTerminal& d1, std::string d2){
-    
 }
 
 std::ostream& operator<<(std::ostream& os, const NTerminal& dt){
-    os << dt.lexema<<". =>. ";
-    for (const auto &p : dt.derecha)
-    {
-        /*Manera 1
-        os << p.first << ": "<<p.second;
-        os << std::endl;
-        */
-       //Manera 2
-       os <<p.second<<".";
+    os <<dt.lexema<<"[";
+    for (const auto &p : dt.atributos){
+        os << p.first << ":"<<p.second<<"|";
     }
-    return os;
+    return os <<"]";
 }
+
+void NTerminal::addAtributo(std::string atributo,std::string valor){
+    atributos.insert(std::pair<std::string,std::string>(atributo, valor));
+}
+
+/*
+Tareas:
+Sobrecargar operador:
+
+void NTerminal::operator==( NTerminal &nterminal ){
+    //falta
+    ;
+}
+
+void NTerminal::operator==(std::string ){
+    //falta
+    ;
+}
+
+*sobrecargar operador != para la clase estado
+
+*/
+

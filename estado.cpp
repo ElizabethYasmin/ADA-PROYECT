@@ -1,5 +1,6 @@
 #include <iostream>
-
+#include "Nterminal.cpp"
+#include <vector>
 /*
 estado
 produccion => produccion
@@ -9,32 +10,18 @@ origen = S[k]
 class estado{
 private:
     std::string produccion;
-    int i;
+    int punto;
     int origen;
-    std::string izquierda;
-    std::string derecha;
+    NTerminal izquierda;
+    std::vector<NTerminal> derecha;
 public: 
-    estado(std::string produccion, int k, int j){
-        this -> produccion = produccion;
-        i = k;
-        origen = j;
-        int breakk= 0;
-        //ubica la posicion de separacion (::=)     
-        for(int j=0 ; j<produccion.length() ; j++){
-            if (produccion[j]==32) 
-            {breakk=j; break;}
-        }
-        //extrae el lado izquierdo
-            for(int j=0 ; j<breakk ; j++){
-                izquierda += produccion[j];
-        }
-        //extrae el lado derecho
-        for (int j=breakk+5; j<produccion.length();j++){
-                derecha += produccion[j];
-        }
-    }
+    estado(std::string,int,int);
+    NTerminal getIzq();
+    NTerminal getNextElement();
+    int getlength();
+
     int getDotPosition(){ 
-        return i;
+        return punto;
     }
     int getOrigen(){ 
         return origen;
@@ -42,43 +29,63 @@ public:
     std::string getProduccion(){
         return produccion;
     }
-    /*Devuelve el elemento despues del '*' */
-    std::string getNextElement(){ 
-        std::string temp;
-        int cont;
-        int k;
-        //cuenta los espacios
-        for(k=0; cont<i && k<derecha.length();k++){
-            if(derecha[k]==32){
-                cont++;
-            }
-        }
-        //extrae el elemento despues del espacio k
-        for(int j=k; derecha[j]!=32 && j<derecha.length();j++){
-            temp += derecha[j];
-        }
-        return temp;
-    }
-    std::string getIzquierda(){ 
-        return izquierda;
-    }
-    std::string getDerecha(){ 
-        return derecha;
-    }
-
-    //devuelva la cantidad de elementos a la derecha de la produccion
-    int getlength(){
-        int cont = 0;
-        for(int i = 0 ; i<derecha.size() ; i++){
-            if(derecha[i]==32)
-                cont ++;
-        }
-        return cont+1;
-    }
     friend std::ostream& operator<<(std::ostream& os, const estado& dt);
 };
 
-std::ostream& operator<<(std::ostream& os, const estado& dt){
-    os << dt.izquierda << " => " <<  dt.derecha << " punto: " << dt.i << " origen: " << dt.origen;
-    return os;
+estado::estado(std::string _produccion,int _punto,int _origen){
+    punto = _punto;
+    origen = _origen;
+    int i;
+    std::string izq,der;
+    this -> produccion = _produccion;
+    int breakk= 0;
+    //ubica la posicion de separacion (::=)     
+    for(int i=0 ; i<_produccion.length() ; i++){
+        if (_produccion[i]==':') {
+            breakk=i; 
+            break;
+        }
+    }
+    //extrae el lado izquierdo
+    for(i ; i<breakk ; i++){
+            izq += _produccion[i];
+    }
+    izquierda=NTerminal(izq);
+    //std::cout<<"izquierda: "<<izquierda<<" break: "<<breakk<<std::endl;
+    //extrae el lado derecho
+    for (i=breakk+4; i<_produccion.length();i++){
+        if(_produccion[i]==32){
+            derecha.push_back(NTerminal(der));
+            der="";
+        }
+        else der += _produccion[i];
+    }
+    derecha.push_back(NTerminal(der));
 }
+
+NTerminal estado::getNextElement(){
+    return derecha.at(punto);
+}
+
+NTerminal estado::getIzq(){
+    return izquierda;
+}
+
+int estado::getlength(){
+    return derecha.size();
+}
+
+std::ostream& operator<<(std::ostream& os, const estado& dt){
+    os << dt.izquierda << " => ";
+    for (auto it =dt.derecha.begin(); it != dt.derecha.end(); it++)
+        os << *it;
+    os <<", Punto: "<<dt.punto <<", Origen: "<<dt.origen <<".";
+    return os; 
+}
+
+/*
+    tareas:
+    *sobrecargar operador != para la clase estado
+    *sacar los metodos de la la clase
+*/
+
