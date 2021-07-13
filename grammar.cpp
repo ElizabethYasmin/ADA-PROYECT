@@ -1,30 +1,33 @@
 #include <iostream>
 #include "produccion.cpp"
+#include <string>
+#include <vector>
+using namespace std;
 
 class Grammar{
 public:
-    //std::vector<produccion>producciones_terminales;
-    //std::vector<produccion>producciones_no_terminales; 
-    std::vector<produccion>lista_de_producciones; 
+    //vector<produccion>producciones_terminales;
+    //vector<produccion>producciones_no_terminales; 
+    vector<produccion>lista_de_producciones; 
 public:
-    Grammar(std::string G[],int n);
+    Grammar(string G[],int n);
     void print();
     
 };
 
 void Grammar::print(){
     /*
-    std::cout<<"No terminales:\n";
+    cout<<"No terminales:\n";
     for (auto it = producciones_no_terminales.begin(); it != producciones_no_terminales.end(); it++){
-        std::cout<<*it<<"."<<std::endl;
+        cout<<*it<<"."<<endl;
     }
-    std::cout<<"Terminales:\n";
+    cout<<"Terminales:\n";
     for (auto it = producciones_terminales.begin(); it != producciones_terminales.end(); it++){
-        std::cout<<*it<<"."<<std::endl;
+        cout<<*it<<"."<<endl;
     }*/
-    std::cout<<"Terminales:\n";
+    cout<<"Terminales:\n";
     for (auto it = lista_de_producciones.begin(); it != lista_de_producciones.end(); it++){
-        std::cout<<*it<<"."<<std::endl;
+        cout<<*it<<"."<<endl;
     }
 
 }
@@ -33,24 +36,24 @@ void Grammar::print(){
 G ->lista producciones no procesadas (forma 'izquierda' ::= 'derecha' )
 n -> numero de producciones
 */
-Grammar::Grammar(std::string G[],int n){
-    //std::vector<produccion> lista_de_producciones;
+Grammar::Grammar(string G[],int n){
+    //vector<produccion> lista_de_producciones;
     for(int i=0;i<n;i++){//recorre cada produccion en la lista
         int j;
-        std::string izquierda, derecha;
+        string izquierda, derecha;
         for(j=0 ; j<G[i].length() ; j++){ //separa el lado izquierdo
             if(G[i][j+1]!=':'){
                 izquierda += G[i][j];
             }
             else{
-                //std::cout<<" Izquierda: "<<izquierda<<"."<<std::endl;
+                //cout<<" Izquierda: "<<izquierda<<"."<<endl;
                 j+=5;
                 break;
             }
         }
         for(j; j<G[i].length() ; j++){
             if(G[i][j]=='|' && G[i][j+1]=='|'){
-                //std::cout<<" derecha:."<<derecha<<"."<<std::endl;
+                //cout<<" derecha:."<<derecha<<"."<<endl;
                 lista_de_producciones.push_back(produccion(izquierda,derecha));
                 derecha = "";
                 j++;
@@ -58,7 +61,7 @@ Grammar::Grammar(std::string G[],int n){
             else
                 derecha += G[i][j];
         }
-        //std::cout<<" derecha:."<<derecha<<"."<<std::endl;
+        //cout<<" derecha:."<<derecha<<"."<<endl;
         lista_de_producciones.push_back(produccion(izquierda,derecha));
     }
     /*
@@ -74,7 +77,7 @@ Grammar::Grammar(std::string G[],int n){
         }
         //si tiene un caracter en la derecha se verifica que este caracter no tenga produccion
         else{
-            std::string temp2 = temp1.getDerecha();
+            string temp2 = temp1.getDerecha();
             //buscando en las produccion que no haya una produccion del caracter derecho
             for (int j = 0; j<lista_de_producciones.size() ; j++){
                 produccion temp3 = lista_de_producciones.at(j);
@@ -95,7 +98,7 @@ Grammar::Grammar(std::string G[],int n){
 
 int main(){
 
-    std::string G[] = {
+    string G[] = {
         "S ::= NP[NUM=?n] VP[NUM=?n]",
         "NP[NUM=?n] ::= N[NUM=?n]",
         "NP[NUM=?n] ::= PropN[NUM=?n]",

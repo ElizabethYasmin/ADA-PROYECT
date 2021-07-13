@@ -1,26 +1,29 @@
 #include <iostream>
 #include "Nterminal.cpp"
 #include <vector>
+#include <string>
+#include <vector>
+using namespace std;
 
 class produccion {
 private:
-    std::string _produccion;
+    string _produccion;
     NTerminal izquierda;
-    std::vector<NTerminal> derecha;
+    vector<NTerminal> derecha;
 public:
-    produccion(std::string);
-    produccion(std::string,std::string);
-    std::string getIzquierda();
-    std::string getDerecha(); 
+    produccion(string);
+    produccion(string,string);
+    string getIzquierda();
+    string getDerecha(); 
     int getlength(); 
     //devuelva la cantidad de elementos a la derecha de la produccion
-    friend std::ostream& operator<<(std::ostream& os, const produccion& dt);
+    friend ostream& operator<<(ostream& os, const produccion& dt);
     friend bool operator!=(produccion const& x, produccion const& y);
 };
 
-produccion::produccion(std::string _produccion){
+produccion::produccion(string _produccion){
     int i;
-    std::string izq,der;
+    string izq,der;
     this -> _produccion = _produccion;
     int breakk= 0;
     //ubica la posicion de separacion (::=)     
@@ -35,7 +38,7 @@ produccion::produccion(std::string _produccion){
             izq += _produccion[i];
     }
     izquierda=NTerminal(izq);
-    //std::cout<<"izquierda: "<<izquierda<<" break: "<<breakk<<std::endl;
+    //cout<<"izquierda: "<<izquierda<<" break: "<<breakk<<endl;
     //extrae el lado derecho
     for (i=breakk+4; i<_produccion.length();i++){
         if(_produccion[i]==32){
@@ -47,10 +50,10 @@ produccion::produccion(std::string _produccion){
     derecha.push_back(NTerminal(der));
 }
 
-produccion::produccion(std::string izq,std::string _der){
-    std::string der;
+produccion::produccion(string izq,string _der){
+    string der;
     izquierda=NTerminal(izq);
-    //std::cout<<"izquierda: "<<izquierda<<" break: "<<breakk<<std::endl;
+    //cout<<"izquierda: "<<izquierda<<" break: "<<breakk<<endl;
     //extrae el lado derecho
     for(int i=0; i<_der.length();i++){
         if(_der[i]==32){
@@ -66,7 +69,7 @@ int produccion::getlength(){
     return derecha.size();
 }
 
-std::ostream& operator<<(std::ostream& os, const produccion& dt){
+ostream& operator<<(ostream& os, const produccion& dt){
     os << dt.izquierda << " => ";
     for (auto it =dt.derecha.begin(); it != dt.derecha.end(); it++)
         os << *it<<" ";
@@ -87,5 +90,5 @@ bool operator!=(produccion const& x, produccion const& y){
 /*
 int main(){
     produccion A("VP[TENSE=?t,NUM=?n]","IV[TENSE=?t,NUM=?n]");
-    std::cout<<A;
+    cout<<A;
 }*/

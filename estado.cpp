@@ -1,6 +1,9 @@
 #include <iostream>
+#include <string>
 #include "Nterminal.cpp"
 #include <vector>
+using namespace std;
+
 /*
 estado
 produccion => produccion
@@ -9,13 +12,13 @@ origen = S[k]
 */
 class estado{
 private:
-    std::string produccion;
+    string produccion;
     int punto;
     int origen;
     NTerminal izquierda;
-    std::vector<NTerminal> derecha;
+    vector<NTerminal> derecha;
 public: 
-    estado(std::string,int,int);
+    estado(string,int,int);
     NTerminal getIzq();
     NTerminal getNextElement();
     int getlength();
@@ -26,17 +29,18 @@ public:
     int getOrigen(){ 
         return origen;
     }
-    std::string getProduccion(){
+    string getProduccion(){
         return produccion;
     }
-    friend std::ostream& operator<<(std::ostream& os, const estado& dt);
+    friend ostream& operator<<(ostream& os, const estado& dt);
+    friend bool operator!=(string &a,string &b);
 };
 
-estado::estado(std::string _produccion,int _punto,int _origen){
+estado::estado(string _produccion,int _punto,int _origen){
     punto = _punto;
     origen = _origen;
     int i;
-    std::string izq,der;
+    string izq,der;
     this -> produccion = _produccion;
     int breakk= 0;
     //ubica la posicion de separacion (::=)     
@@ -51,7 +55,7 @@ estado::estado(std::string _produccion,int _punto,int _origen){
             izq += _produccion[i];
     }
     izquierda=NTerminal(izq);
-    //std::cout<<"izquierda: "<<izquierda<<" break: "<<breakk<<std::endl;
+    //cout<<"izquierda: "<<izquierda<<" break: "<<breakk<<endl;
     //extrae el lado derecho
     for (i=breakk+4; i<_produccion.length();i++){
         if(_produccion[i]==32){
@@ -75,7 +79,7 @@ int estado::getlength(){
     return derecha.size();
 }
 
-std::ostream& operator<<(std::ostream& os, const estado& dt){
+ostream& operator<<(ostream& os, const estado& dt){
     os << dt.izquierda << " => ";
     for (auto it =dt.derecha.begin(); it != dt.derecha.end(); it++)
         os << *it;
@@ -89,3 +93,6 @@ std::ostream& operator<<(std::ostream& os, const estado& dt){
     *sacar los metodos de la la clase
 */
 
+ bool operator!=(string &a,string &b){
+
+ }

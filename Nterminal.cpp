@@ -1,33 +1,37 @@
 #include <iostream>
 #include <map>
 #include <vector>
+#include <string>
+#include <vector>
+using namespace std;
  
 class NTerminal {
 private:
-    std::string lexema;
-    std::map<std::string,std::string> atributos;
+    string lexema;
+    map<string,string> atributos;
 public:
     NTerminal();
-    NTerminal(std::string);
-    void addAtributo(std::string,std::string);
+    NTerminal(string);
+    void addAtributo(string,string);
 
-    friend std::ostream& operator<<(std::ostream& os, const NTerminal& dt);
-
+    friend ostream& operator<<(ostream& os, const NTerminal& dt);
+    //friend NTerminal operator=(NTerminal &nterminal);
+    bool operator ==(const NTerminal &t);
 };
 
 NTerminal::NTerminal(){;}
 //forma [TENSE=?t, NUM=?n]
-NTerminal::NTerminal(std::string lex){
+NTerminal::NTerminal(string lex){
     int i,_switch=0;
-    std::string atrib;
-    std::string val;
+    string atrib;
+    string val;
     //separando el nombre de la etiqueta
     for(i=0 ; i<lex.length() ; i++){
         if(lex[i]=='[')
             break;
         this->lexema+=lex[i];
     }
-    //std::cout<<"Lexema: "<<lexema<<std::endl;
+    //cout<<"Lexema: "<<lexema<<endl;
     i++; //siguiente elemento a [
     for(i ; i<lex.length() ; i++){
         if(lex[i]=='=')
@@ -35,8 +39,8 @@ NTerminal::NTerminal(std::string lex){
         else if(lex[i]==32)
             continue;
         else if(lex[i]==']'||lex[i]==','){
-            //std::cout<<"atrib: "<<atrib<<std::endl;
-            //std::cout<<"val: "<<val<<std::endl;
+            //cout<<"atrib: "<<atrib<<endl;
+            //cout<<"val: "<<val<<endl;
             addAtributo(atrib,val);
             atrib = "";
             val = "";
@@ -49,7 +53,7 @@ NTerminal::NTerminal(std::string lex){
     }
 }
 
-std::ostream& operator<<(std::ostream& os, const NTerminal& dt){
+ostream& operator<<(ostream& os, const NTerminal& dt){
     os <<dt.lexema<<"[";
     for (const auto &p : dt.atributos){
         os << p.first << ":"<<p.second<<"|";
@@ -57,25 +61,34 @@ std::ostream& operator<<(std::ostream& os, const NTerminal& dt){
     return os <<"]";
 }
 
-void NTerminal::addAtributo(std::string atributo,std::string valor){
-    atributos.insert(std::pair<std::string,std::string>(atributo, valor));
+void NTerminal::addAtributo(string atributo,string valor){
+    atributos.insert(pair<string,string>(atributo, valor));
+}
+
+
+//Tareas:
+//Sobrecargar operador:
+
+
+bool NTerminal::operator==(const NTerminal &t) 
+{
+    if ((this->lexema == t.lexema) && (this->atributos == t.atributos))
+        return true;
+    return false;
 }
 
 /*
-Tareas:
-Sobrecargar operador:
-
 void NTerminal::operator==( NTerminal &nterminal ){
     //falta
-    ;
+    
 }
 
-void NTerminal::operator==(std::string ){
+void NTerminal::operator==(string ){
     //falta
     ;
 }
-
-*sobrecargar operador != para la clase estado
-
 */
+//*sobrecargar operador != para la clase estado
+
+
 
