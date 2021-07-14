@@ -6,8 +6,8 @@ using namespace std;
 
 class Grammar{
 public:
-    //vector<produccion>producciones_terminales;
-    //vector<produccion>producciones_no_terminales; 
+    vector<produccion>producciones_terminales;
+    vector<produccion>producciones_no_terminales; 
     vector<produccion>lista_de_producciones; 
 public:
     Grammar(string G[],int n);
@@ -16,20 +16,21 @@ public:
 };
 
 void Grammar::print(){
-    /*
-    cout<<"No terminales:\n";
+    
+    cout<<"\nNo terminales:\n";
     for (auto it = producciones_no_terminales.begin(); it != producciones_no_terminales.end(); it++){
         cout<<*it<<"."<<endl;
     }
-    cout<<"Terminales:\n";
+    cout<<"\nTerminales:\n";
     for (auto it = producciones_terminales.begin(); it != producciones_terminales.end(); it++){
         cout<<*it<<"."<<endl;
-    }*/
+    }
+    /*
     cout<<"Terminales:\n";
     for (auto it = lista_de_producciones.begin(); it != lista_de_producciones.end(); it++){
         cout<<*it<<"."<<endl;
     }
-
+*/
 }
 
 /*
@@ -64,7 +65,7 @@ Grammar::Grammar(string G[],int n){
         //cout<<" derecha:."<<derecha<<"."<<endl;
         lista_de_producciones.push_back(produccion(izquierda,derecha));
     }
-    /*
+
     //clasificacion de producciones: terminales o no terminales
     for (int i = 0; i<lista_de_producciones.size() ; i++){
         int cont=0;
@@ -73,17 +74,17 @@ Grammar::Grammar(string G[],int n){
         //si tiene mas de un caracter en la derecha no es terminal
         if(temp1.getlength()>1){
             cont++;
-            producciones_no_terminales.push_back(temp1.producci0n);
+            producciones_no_terminales.push_back(temp1);
         }
         //si tiene un caracter en la derecha se verifica que este caracter no tenga produccion
         else{
-            string temp2 = temp1.getDerecha();
+            vector<NTerminal> temp2 = temp1.getDerecha();
             //buscando en las produccion que no haya una produccion del caracter derecho
             for (int j = 0; j<lista_de_producciones.size() ; j++){
                 produccion temp3 = lista_de_producciones.at(j);
-                if(temp2 == temp3.getIzquierda()){
+                if(temp2.at(0).getLexema() == temp3.getIzquierda().getLexema()){
                     cont++;
-                    producciones_no_terminales.push_back(temp1.producci0n);
+                    producciones_no_terminales.push_back(temp1);
                     break;
                 }
             }
@@ -92,7 +93,7 @@ Grammar::Grammar(string G[],int n){
             producciones_terminales.push_back(temp1);
             
     }
-    */
+    
 } 
 
 
@@ -113,12 +114,12 @@ int main(){
         "Det ::= the||some||several",
         "PropN[NUM=sg] ::= Kim||Jody",
         "N[NUM=sg] ::= dog||girl||car||child",
-        "N[NUM=pl] ::= dogs||girls||cars||children'",
-        "IV[TENSE=pres,NUM=sg] ::= disappears||walks'",
+        "N[NUM=pl] ::= dogs||girls||cars||children",
+        "IV[TENSE=pres,NUM=sg] ::= disappears||walks",
         "TV[TENSE=pres,NUM=sg] ::= sees||likes",
         "IV[TENSE=pres,NUM=pl] ::= disappear||walk",
         "TV[TENSE=pres,NUM=pl] ::= see||like",
-        "IV[TENSE=past] ::= disappeared||walked'",
+        "IV[TENSE=past] ::= disappeared||walked",
         "TV[TENSE=past] ::= saw||liked"
     };
 

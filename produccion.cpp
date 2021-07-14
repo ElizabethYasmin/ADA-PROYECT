@@ -13,8 +13,8 @@ private:
 public:
     produccion(string);
     produccion(string,string);
-    string getIzquierda();
-    string getDerecha(); 
+    NTerminal getIzquierda();
+    vector<NTerminal> getDerecha(); 
     int getlength(); 
     //devuelva la cantidad de elementos a la derecha de la produccion
     friend ostream& operator<<(ostream& os, const produccion& dt);
@@ -67,6 +67,15 @@ produccion::produccion(string izq,string _der){
 
 int produccion::getlength(){
     return derecha.size();
+}
+
+
+NTerminal produccion::getIzquierda(){
+    return izquierda;
+}
+
+vector<NTerminal> produccion::getDerecha(){
+    return derecha;
 }
 
 ostream& operator<<(ostream& os, const produccion& dt){

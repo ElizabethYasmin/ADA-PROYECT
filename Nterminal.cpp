@@ -5,6 +5,8 @@
 #include <vector>
 using namespace std;
  
+//N[NUM=pl] ::= dogs||girls||cars||children
+
 class NTerminal {
 private:
     string lexema;
@@ -13,14 +15,19 @@ public:
     NTerminal();
     NTerminal(string);
     void addAtributo(string,string);
-
+    string getLexema();
     friend ostream& operator<<(ostream& os, const NTerminal& dt);
     //friend NTerminal operator=(NTerminal &nterminal);
     bool operator ==(const NTerminal &t);
 };
 
 NTerminal::NTerminal(){;}
-//forma [TENSE=?t, NUM=?n]
+//Lexema[NUM=pl,TENSE=T?]
+/*
+map<num,pl>
+map<tense,T?>
+*/
+//forma det[TENSE=?t,NUM=?n]
 NTerminal::NTerminal(string lex){
     int i,_switch=0;
     string atrib;
@@ -54,21 +61,24 @@ NTerminal::NTerminal(string lex){
 }
 
 ostream& operator<<(ostream& os, const NTerminal& dt){
-    os <<dt.lexema<<"[";
-    for (const auto &p : dt.atributos){
-        os << p.first << ":"<<p.second<<"|";
+    os <<dt.lexema;
+    if(!dt.atributos.empty()){
+        os <<"[";
+        for (const auto &p : dt.atributos){
+            os <<"ATRIBUTO: " <<p.first << ", valor: "<<p.second<<"|";
+        }
+        os <<"]";
     }
-    return os <<"]";
+    return os;
 }
 
 void NTerminal::addAtributo(string atributo,string valor){
     atributos.insert(pair<string,string>(atributo, valor));
 }
 
-
-//Tareas:
-//Sobrecargar operador:
-
+string NTerminal::getLexema(){
+    return lexema;
+}
 
 bool NTerminal::operator==(const NTerminal &t) 
 {

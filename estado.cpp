@@ -22,7 +22,8 @@ public:
     NTerminal getIzq();
     NTerminal getNextElement();
     int getlength();
-
+    NTerminal getNextElement();
+    NTerminal getIzquierda();
     int getDotPosition(){ 
         return punto;
     }
@@ -79,6 +80,10 @@ int estado::getlength(){
     return derecha.size();
 }
 
+NTerminal estado::getIzquierda(){
+    return izquierda;
+}
+
 ostream& operator<<(ostream& os, const estado& dt){
     os << dt.izquierda << " => ";
     for (auto it =dt.derecha.begin(); it != dt.derecha.end(); it++)
@@ -87,12 +92,8 @@ ostream& operator<<(ostream& os, const estado& dt){
     return os; 
 }
 
-/*
-    tareas:
-    *sobrecargar operador != para la clase estado
-    *sacar los metodos de la la clase
-*/
-
  bool operator!=(string &a,string &b){
-
  }
+
+
+
