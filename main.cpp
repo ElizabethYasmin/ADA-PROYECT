@@ -1,11 +1,9 @@
-/*==========================
-PARSER para gramatica dependiente del contexto
-============================
-Implementacion por:
-+Huanca Parqui Elizabeth Yasmin
-+Ccorahua Lozano Rommel
-+Villanueva Guerrero Luisa
-*/
+//==========================
+//PARSER para gramatica dependiente del contexto
+//============================
+//Implementacion por:
+//+Huanca Parqui Elizabeth Yasmin
+//+Villanueva Guerrero Luisa
 
 #include <iostream>
 #include "Nterminal.cpp"
@@ -15,8 +13,6 @@ Implementacion por:
 #include "chart.cpp"
 #include "Early_Parser.cpp"
 #include "input.cpp"
-
-
 
 /*
 argumentos:

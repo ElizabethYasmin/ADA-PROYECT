@@ -34,7 +34,6 @@ punto de early en 0
 */
 void predecir(estado _temp ,chart S[], int k, grammar gramatica){
  //  form (X → α • Y β, j) , add (Y → • γ, k) 
-    //std::cout<<_temp<<std::endl;
     NTerminal Y = _temp.getNextElement();
     for (auto it = gramatica.producciones_no_terminales.begin(); it != gramatica.producciones_no_terminales.end(); it++){
         produccion temp = *it;
@@ -79,9 +78,8 @@ void scanneo(std::string a ,chart S[], int k, estado estadoA,grammar gramatica){
         }
     }
 }
-/*
-Si el punto de early esta al final de la parte derecha
-*/
+
+//Si el punto de early esta al final de la parte derecha
 bool terminado(estado S){
     if(S.getDotPosition()>=S.getlength())
         return 1;

@@ -30,7 +30,6 @@ G ->lista producciones no procesadas (forma 'izquierda' ::= 'derecha' )
 n -> numero de producciones
 */
 grammar::grammar(string G[],int n){
-    //vector<produccion> lista_de_producciones;
     for(int i=0;i<n;i++){//recorre cada produccion en la lista
         int j;
         string izquierda, derecha;
@@ -39,14 +38,12 @@ grammar::grammar(string G[],int n){
                 izquierda += G[i][j];
             }
             else{
-                //cout<<" Izquierda: "<<izquierda<<"."<<endl;
                 j+=5;
                 break;
             }
         }
         for(j; j<G[i].length() ; j++){
             if(G[i][j]=='|' && G[i][j+1]=='|'){
-                //cout<<" derecha:."<<derecha<<"."<<endl;
                 lista_de_producciones.push_back(produccion(izquierda,derecha));
                 derecha = "";
                 j++;
@@ -54,7 +51,6 @@ grammar::grammar(string G[],int n){
             else
                 derecha += G[i][j];
         }
-        //cout<<" derecha:."<<derecha<<"."<<endl;
         lista_de_producciones.push_back(produccion(izquierda,derecha));
     }
 

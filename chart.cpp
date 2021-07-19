@@ -1,5 +1,4 @@
 #include <iostream>
-//#include "estado.cpp"
 #include <string>
 #include <vector>
 #include <map>

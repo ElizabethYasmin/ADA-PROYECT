@@ -84,7 +84,6 @@ void produccion::deleteAtributos(){
     izquierda.deleteAtributos();
 }
 
-
 ostream& operator<<(ostream& os, const produccion& dt){
     os << dt.izquierda << " => ";
     for (auto it =dt.derecha.begin(); it != dt.derecha.end(); it++)

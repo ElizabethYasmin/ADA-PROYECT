@@ -1,6 +1,5 @@
 #include <iostream>
 #include <string>
-//#include "Nterminal.cpp"
 #include <vector>
 using namespace std;
 
@@ -12,7 +11,6 @@ origen = S[k]
 */
 class estado{
 private:
-    //string produccion;
     int punto;
     int origen;
     NTerminal izquierda;

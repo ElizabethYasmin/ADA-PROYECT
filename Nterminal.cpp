@@ -4,7 +4,6 @@
 #include <string>
 #include <vector>
 using namespace std;
- 
 
 class NTerminal {
 private:
@@ -20,14 +19,12 @@ public:
     map<string,string> getAtributos();
     void deleteAtributos();
     friend ostream& operator<<(ostream& os, const NTerminal& dt);
-    //friend NTerminal operator=(NTerminal &nterminal);
     friend bool operator==(const NTerminal &t, const NTerminal &v);
 };
 
 NTerminal::NTerminal(){;}
-/*
-forma det[TENSE=?t,NUM=?n]
-*/
+
+//forma det[TENSE=?t,NUM=?n]
 NTerminal::NTerminal(string lex){
     int i,_switch=0;
     string atrib;
@@ -38,7 +35,6 @@ NTerminal::NTerminal(string lex){
             break;
         this->lexema+=lex[i];
     }
-    //cout<<"Lexema: "<<lexema<<endl;
     i++; //siguiente elemento a [
     for(i ; i<lex.length() ; i++){
         if(lex[i]=='=')
@@ -99,9 +95,7 @@ void NTerminal::setAtributos(map<string,string> n_atributos){
     }
 }
 
-/*
-los atributos en comun deben ser iguales
-*/
+//los atributos en comun deben ser iguales
 bool operator==(const NTerminal &t, const NTerminal &v){
     if ((t.lexema != v.lexema))
         return false;
