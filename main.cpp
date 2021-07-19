@@ -8,56 +8,68 @@ Implementacion por:
 */
 
 #include <iostream>
+#include "Nterminal.cpp"
+#include "produccion.cpp"
+#include "estado.cpp"
+#include "grammar.cpp"
+#include "chart.cpp"
 #include "Early_Parser.cpp"
+#include "input.cpp"
 
-int main(){
-   /*
-    //Ejemplo Wikipedia
-    std::string A = "number + number * number";
-    std::string G[] = {
-        "P ::= S" ,
-        "S ::= S + M", 
-        "S ::= M" ,
-        "M ::= M * T" ,
-        "M ::= T" ,
-        "T ::= number" 
-    };
-    early_parser(A,G,6);
+
+
+/*
+argumentos:
+0 -> gramatica.txt
+1 -> entrada a evaluar
+2 -> salida.txt
 */
-   /*
-    //Ejemplo YT: https://www.youtube.com/watch?v=WNKw1tiskSM&t=1622s
-    std::string A = "1 + 1";
-    std::string G[] = {
-        "term ::= number + term" ,
-        "term ::= number", 
-        "number ::= 1" 
-    };
-    early_parser(A,G,3);
-  */
-   /*
-    //Ejemplo YT: https://www.youtube.com/watch?v=1j6hB3O4hAM&t=462s
-    std::string A = "book that flight";
-    std::string G[] = {
-        "S ::= NP VP" ,
-        "S ::= VP", 
-        "NP ::= det nominal" ,
-        "nominal ::= noun" , 
-        "VP ::= verb" ,
-        "VP ::= verb NP" ,
-        "det ::= that" ,
-        "det ::= this" ,
-        "det ::= a" ,
-        "det ::= the" ,
-        "noun ::= book" ,
-        "noun ::= flight" ,
-        "noun ::= meal" ,
-        "noun ::= money" ,
-        "verb ::= book" ,
-        "verb ::= include" ,
-        "verb ::= prefer"
-    };
-   early_parser(A,G,17);
-    */
-   
-    return 0;
+int main(int argc, char *argv[]){
+    if(argc==1){ //ingresar los datos en el main   
+        //gramatica de prueba:
+        std::string entrada="these dogs walk";
+        std::string G[] = {
+            "S ::= NP[NUM=?n] VP[NUM=?n]",
+            "NP[NUM=?n] ::= N[NUM=?n]",
+            "NP[NUM=?n] ::= PropN[NUM=?n]",
+            "NP[NUM=?n] ::= Det[NUM=?n] N[NUM=?n]",
+            "NP[NUM=pl] ::= N[NUM=pl]",
+
+            "VP[TENSE=?t,NUM=?n] ::= IV[TENSE=?t,NUM=?n]",
+            "VP[TENSE=?t,NUM=?n] ::= TV[TENSE=?t,NUM=?n] NP",
+
+            "Det[NUM=sg] ::= this||every",
+            "Det[NUM=pl] ::= these||all",
+            "Det ::= the||some||several",
+            "PropN[NUM=sg] ::= Kim||Jody",
+            "N[NUM=sg] ::= dog||girl||car||child",
+            "N[NUM=pl] ::= dogs||girls||cars||children",
+            "IV[TENSE=pres,NUM=sg] ::= disappears||walks",
+            "TV[TENSE=pres,NUM=sg] ::= sees||likes",
+            "IV[TENSE=pres,NUM=pl] ::= disappear||walk",
+            "TV[TENSE=pres,NUM=pl] ::= see||like",
+            "IV[TENSE=past] ::= disappeared||walked",
+            "TV[TENSE=past] ::= saw||liked"
+        };
+        early_parser(entrada,G,19,"salida.txt");
+    }
+   if(argc<1){ ///si se ingresa la gramatica por .txt
+        int numeroProducciones = getNumeroProducciones("input_gramar.txt");
+        std::string entrada;
+        std::string salida = "salida.txt";
+        std::string G[numeroProducciones];
+
+        if(argc<=2){ //si se ingresa la gramatica y entrada
+                entrada=argv[1];
+        }
+        else{
+            std::cout<<"Ingresar entrada a evaluar:\n";
+            std::getline (std::cin,entrada);
+        }
+        if(argc==3){
+            salida=argv[2];
+        }
+        early_parser("the dogs walk",G,numeroProducciones,"salida.txt");
+    }
+    return 1;
 }
