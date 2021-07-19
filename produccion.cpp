@@ -1,5 +1,4 @@
 #include <iostream>
-#include "Nterminal.cpp"
 #include <vector>
 #include <string>
 #include <vector>
@@ -8,14 +7,17 @@ using namespace std;
 class produccion {
 private:
     string _produccion;
-    NTerminal izquierda;
+    //NTerminal izquierda;
     vector<NTerminal> derecha;
 public:
+    NTerminal izquierda;
     produccion(string);
     produccion(string,string);
     NTerminal getIzquierda();
     vector<NTerminal> getDerecha(); 
     int getlength(); 
+    bool compare(std::string,std::map<std::string,std::string>);
+    void deleteAtributos();
     //devuelva la cantidad de elementos a la derecha de la produccion
     friend ostream& operator<<(ostream& os, const produccion& dt);
     friend bool operator!=(produccion const& x, produccion const& y);
@@ -38,7 +40,7 @@ produccion::produccion(string _produccion){
             izq += _produccion[i];
     }
     izquierda=NTerminal(izq);
-    //cout<<"izquierda: "<<izquierda<<" break: "<<breakk<<endl;
+
     //extrae el lado derecho
     for (i=breakk+4; i<_produccion.length();i++){
         if(_produccion[i]==32){
@@ -53,7 +55,7 @@ produccion::produccion(string _produccion){
 produccion::produccion(string izq,string _der){
     string der;
     izquierda=NTerminal(izq);
-    //cout<<"izquierda: "<<izquierda<<" break: "<<breakk<<endl;
+
     //extrae el lado derecho
     for(int i=0; i<_der.length();i++){
         if(_der[i]==32){
@@ -78,26 +80,14 @@ vector<NTerminal> produccion::getDerecha(){
     return derecha;
 }
 
+void produccion::deleteAtributos(){
+    izquierda.deleteAtributos();
+}
+
+
 ostream& operator<<(ostream& os, const produccion& dt){
     os << dt.izquierda << " => ";
     for (auto it =dt.derecha.begin(); it != dt.derecha.end(); it++)
         os << *it<<" ";
     return os;
 }
-
-/*
-
-Tarea:
-
-bool operator!=(produccion const& x, produccion const& y){
-    //falta
-}
-
-*/
-
-//borrar esto
-/*
-int main(){
-    produccion A("VP[TENSE=?t,NUM=?n]","IV[TENSE=?t,NUM=?n]");
-    cout<<A;
-}*/

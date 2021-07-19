@@ -1,22 +1,20 @@
 #include <iostream>
-#include "produccion.cpp"
 #include <string>
 #include <vector>
 using namespace std;
 
-class Grammar{
+class grammar{
 public:
     vector<produccion>producciones_terminales;
     vector<produccion>producciones_no_terminales; 
     vector<produccion>lista_de_producciones; 
 public:
-    Grammar(string G[],int n);
+    grammar(string G[],int n);
     void print();
     
 };
 
-void Grammar::print(){
-    
+void grammar::print(){
     cout<<"\nNo terminales:\n";
     for (auto it = producciones_no_terminales.begin(); it != producciones_no_terminales.end(); it++){
         cout<<*it<<"."<<endl;
@@ -25,19 +23,13 @@ void Grammar::print(){
     for (auto it = producciones_terminales.begin(); it != producciones_terminales.end(); it++){
         cout<<*it<<"."<<endl;
     }
-    /*
-    cout<<"Terminales:\n";
-    for (auto it = lista_de_producciones.begin(); it != lista_de_producciones.end(); it++){
-        cout<<*it<<"."<<endl;
-    }
-*/
 }
 
 /*
 G ->lista producciones no procesadas (forma 'izquierda' ::= 'derecha' )
 n -> numero de producciones
 */
-Grammar::Grammar(string G[],int n){
+grammar::grammar(string G[],int n){
     //vector<produccion> lista_de_producciones;
     for(int i=0;i<n;i++){//recorre cada produccion en la lista
         int j;
@@ -90,40 +82,6 @@ Grammar::Grammar(string G[],int n){
             }
         }
         if(cont==0)
-            producciones_terminales.push_back(temp1);
-            
+            producciones_terminales.push_back(temp1);      
     }
-    
 } 
-
-
-int main(){
-
-    string G[] = {
-        "S ::= NP[NUM=?n] VP[NUM=?n]",
-        "NP[NUM=?n] ::= N[NUM=?n]",
-        "NP[NUM=?n] ::= PropN[NUM=?n]",
-        "NP[NUM=?n] ::= Det[NUM=?n] N[NUM=?n]",
-        "NP[NUM=pl] ::= N[NUM=pl]",
-
-        "VP[TENSE=?t,NUM=?n] ::= IV[TENSE=?t,NUM=?n]",
-        "VP[TENSE=?t,NUM=?n] ::= TV[TENSE=?t,NUM=?n] NP",
-
-        "Det[NUM=sg] ::= this||every",
-        "Det[NUM=pl] ::= these||all",
-        "Det ::= the||some||several",
-        "PropN[NUM=sg] ::= Kim||Jody",
-        "N[NUM=sg] ::= dog||girl||car||child",
-        "N[NUM=pl] ::= dogs||girls||cars||children",
-        "IV[TENSE=pres,NUM=sg] ::= disappears||walks",
-        "TV[TENSE=pres,NUM=sg] ::= sees||likes",
-        "IV[TENSE=pres,NUM=pl] ::= disappear||walk",
-        "TV[TENSE=pres,NUM=pl] ::= see||like",
-        "IV[TENSE=past] ::= disappeared||walked",
-        "TV[TENSE=past] ::= saw||liked"
-    };
-
-    Grammar X(G,19);
-    X.print();
- 
-}
