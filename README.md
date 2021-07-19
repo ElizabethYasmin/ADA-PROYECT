@@ -7,7 +7,7 @@ _Analisis de una gramatica dependiente del contexto, proyecto de Analisis y dise
 
 _Instrucciones te permitirán obtener una copia del proyecto en funcionamiento en tu máquina local para propósitos de desarrollo y pruebas._
 
-Desplegar la rama **NTerminal** para visualizar el proyecto.
+Desplegar la rama **master** para visualizar el proyecto.
 
 
 ### Pre-requisitos 📋
