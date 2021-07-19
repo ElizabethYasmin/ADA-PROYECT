@@ -49,23 +49,25 @@ int main(int argc, char *argv[]){
         };
         early_parser(entrada,G,19,"salida.txt");
     }
-   if(argc<1){ ///si se ingresa la gramatica por .txt
-        int numeroProducciones = getNumeroProducciones("input_gramar.txt");
+   if(argc>1){ ///si se ingresa la gramatica por .txt
+        int numeroProducciones = getNumeroProducciones(argv[1]);
+        std::cout<<argv[1]<<std::endl;
         std::string entrada;
         std::string salida = "salida.txt";
         std::string G[numeroProducciones];
-
-        if(argc<=2){ //si se ingresa la gramatica y entrada
-                entrada=argv[1];
+        getGrammar(argv[1],numeroProducciones,G);
+        if(argc>2){ //si se ingresa la gramatica y entrada
+                entrada=argv[2];
         }
         else{
             std::cout<<"Ingresar entrada a evaluar:\n";
             std::getline (std::cin,entrada);
+            std::cout<<entrada<<std::endl;
         }
         if(argc==3){
-            salida=argv[2];
+            salida=argv[3];
         }
-        early_parser("the dogs walk",G,numeroProducciones,"salida.txt");
+        early_parser(entrada,G,numeroProducciones,salida);
     }
     return 1;
 }
