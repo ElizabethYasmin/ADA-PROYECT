@@ -2,6 +2,7 @@
 
 _Analisis de una gramatica dependiente del contexto, proyecto de Analisis y diseño de algoritmos_
 
+![image](https://github.com/Jack-Christopher/IS-Project/blob/master/g.gif)
 
 ## Comenzando 👾
 
